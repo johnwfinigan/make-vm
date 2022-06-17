@@ -36,9 +36,20 @@ vm_name="$1"
 
 loc=/var/lib/libvirt/images
 destdisk="$loc/$vm_name.qcow2"
+srcdisk="$loc/Rocky-8-GenericCloud.latest.x86_64.qcow2"
+
+if ! sudo stat "$srcdisk" ; then
+  img=$(mktemp)
+  curl https://download.rockylinux.org/pub/rocky/8/images/Rocky-8-GenericCloud.latest.x86_64.qcow2 > "$img"
+  sudo cp --sparse=always "$img" "$srcdisk"
+  rm "$img"
+  restorecon "$srcdisk"
+else
+  echo template image already exists at "$srcdisk"
+fi
 
 
-sudo cp -a --sparse=always "$loc/Rocky-8-GenericCloud-8.6-20220515.x86_64.qcow2" "$destdisk"
+sudo cp -a --sparse=always "$srcdisk" "$destdisk"
 sudo virt-sysprep --operations=defaults -a "$destdisk"
 
 meta=$(mktemp)
@@ -55,5 +66,5 @@ sudo virt-install  \
         --noautoconsole   \
         --cloud-init disable=on,user-data=cloud-init-rocky.yml,meta-data="$meta"
 
-
+rm "$meta"
 
