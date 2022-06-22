@@ -8,7 +8,7 @@ memory_mb=4096
 while getopts :m: opt; do
   case "$opt" in
     m )
-      re='$^[0-9]+$'
+      re='^[0-9]+$'
       if [[ $OPTARG =~ $re ]] ; then
         memory_mb="$OPTARG"
       else
