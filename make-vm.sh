@@ -2,6 +2,8 @@
 
 set -eu
 
+export PATH=/usr/bin
+
 memory_mb=4096
 while getopts :m: opt; do
   case "$opt" in
@@ -43,7 +45,9 @@ if ! sudo stat "$srcdisk" ; then
   curl https://download.rockylinux.org/pub/rocky/8/images/Rocky-8-GenericCloud.latest.x86_64.qcow2 > "$img"
   sudo cp --sparse=always "$img" "$srcdisk"
   rm "$img"
-  restorecon "$srcdisk"
+  if [ -f /usr/sbin/restorecon ] ; then
+    /usr/sbin/restorecon "$srcdisk"
+  fi
 else
   echo template image already exists at "$srcdisk"
 fi
@@ -53,12 +57,12 @@ sudo cp -a --sparse=always "$srcdisk" "$destdisk"
 sudo virt-sysprep --operations=defaults -a "$destdisk"
 
 meta=$(mktemp)
-printf "instance-id: %s\n" $(uuidgen) > "$meta"
+printf "instance-id: %s\n" "$(uuidgen)" > "$meta"
 
 sudo virt-install  \
-	--name ${1?} \
+	--name "$1" \
         --os-variant rhel8.4  \
-        --memory $memory_mb \
+        --memory "$memory_mb" \
         --vcpus 2  \
         --network default \
         --import \
