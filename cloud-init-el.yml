@@ -1,0 +1,17 @@
+#cloud-config
+fqdn: XXX_HOSTNAME
+users:
+  - default
+  - name: sysadm
+    shell: /usr/bin/bash
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    ssh-authorized-keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID3Xq1Cdht0p/3Mbqh6vC9djQ9mV4g78Th6iQaMbQ5BO
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINqh93JUOZOLIYvODCR1jNiC5ZpFmvvQhQTs0fkyOPJ2
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPSEGRCTeo+pO7G27V+n/hn+XDG3SuAtkHa0Bx9vWdNo
+
+packages:
+  - sudo
+
+runcmd:
+  - echo AuthenticationMethods publickey >> /etc/ssh/sshd_config
