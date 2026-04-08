@@ -7,9 +7,9 @@ export PATH=/usr/bin
 memory_mb=4096
 vers=9
 distro=el
-disk_gb=32
+disk_gb=50
 
-while getopts :m:v:d: opt; do
+while getopts :g:m:v:d: opt; do
   case "$opt" in
   m)
     re='^[0-9]+$'
