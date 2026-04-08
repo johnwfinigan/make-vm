@@ -4,6 +4,10 @@ make-vm.sh automates creating libvirt VMs from distro cloud images
 
 You need a working libvirtd with a network called "default" for this to work.
 
+Before running, update ```cloud-init-el.yml``` to add your ssh key, so that you can ssh to the
+VM as the user it creates, named (by default) ```sysadm```
+
+
 # Examples
 
 The distro abbreviation "el" means Enterprise Linux and selects a RHEL rebuild, currently Rocky.
