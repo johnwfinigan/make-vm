@@ -22,4 +22,4 @@ The distro abbreviation "el" means Enterprise Linux and selects a RHEL rebuild, 
 
 ```sudo virsh net-dhcp-leases default```
 
-```sudo virsh domifaddr```
+```sudo virsh domifaddr my-vm-name```
