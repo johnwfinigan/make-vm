@@ -72,6 +72,10 @@ elif [ "$distro" = debian ] ; then
     echo "Error - unknown os version" >&2
     exit 112
   fi
+elif [ "$distro" = fedora ]; then
+  os_variant="rhel9.0"
+  url_prefix="https://download.fedoraproject.org/pub/fedora/linux/releases/43/Cloud/x86_64/images/"
+  url_file="Fedora-Cloud-Base-Generic-43-1.6.x86_64.qcow2"
 fi
 
 srcdisk="$loc/$url_file"
