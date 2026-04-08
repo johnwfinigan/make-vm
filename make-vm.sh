@@ -5,7 +5,6 @@ set -eu
 export PATH=/usr/bin
 
 memory_mb=4096
-vers=9
 distro=el
 disk_gb=50
 virt_sysprep=false
@@ -22,7 +21,7 @@ while getopts :s:g:m:v:d: opt; do
     fi
     ;;
   v)
-    vers="$OPTARG"
+    version="$OPTARG"
     ;;
   d)
     distro="$OPTARG"
@@ -56,6 +55,7 @@ loc=/var/lib/libvirt/images
 destdisk="$loc/$vm_name.qcow2"
 
 if [ "$distro" = el ]; then
+  vers="${version:-9}"
   os_variant="rhel${vers}.0"
   if [ "$vers" = 8 ] || [ "$vers" = 9 ] ; then
     url_prefix="https://download.rockylinux.org/pub/rocky/${vers}/images/x86_64/"
@@ -68,6 +68,7 @@ if [ "$distro" = el ]; then
     exit 112
   fi
 elif [ "$distro" = debian ] ; then
+  vers="${version:-12}"
   os_variant=debian11
   if [ "$vers" = 12 ]; then
     url_prefix="https://cloud.debian.org/images/cloud/bookworm/latest/"
@@ -81,9 +82,10 @@ elif [ "$distro" = fedora ]; then
   url_prefix="https://download.fedoraproject.org/pub/fedora/linux/releases/43/Cloud/x86_64/images/"
   url_file="Fedora-Cloud-Base-Generic-43-1.6.x86_64.qcow2"
 elif [ "$distro" = ubuntu ]; then
+  vers="${version:-noble}"
   os_variant=debian11
-  url_prefix="https://cloud-images.ubuntu.com/noble/current/"
-  url_file="noble-server-cloudimg-amd64.img"
+  url_prefix="https://cloud-images.ubuntu.com/${vers}/current/"
+  url_file="${vers}-server-cloudimg-amd64.img"
 fi
 
 srcdisk="$loc/$url_file"
