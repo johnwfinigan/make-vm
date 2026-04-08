@@ -57,9 +57,9 @@ destdisk="$loc/$vm_name.qcow2"
 if [ "$distro" = el ]; then
   vers="${version:-9}"
   os_variant="rhel${vers}.0"
-  if [ "$vers" = 8 ] || [ "$vers" = 9 ]; then
+  if [ "$vers" = 8 ] || [ "$vers" = 9 ] || [ "$vers" = 10 ]; then
     url_prefix="https://download.rockylinux.org/pub/rocky/${vers}/images/x86_64/"
-    url_file="Rocky-${vers}-GenericCloud.latest.x86_64.qcow2"
+    url_file="Rocky-${vers}-GenericCloud-Base.latest.x86_64.qcow2"
   elif [ "$vers" = 7 ]; then
     url_prefix="https://cloud.centos.org/centos/7/images/"
     url_file="CentOS-7-x86_64-GenericCloud.qcow2"
