@@ -73,6 +73,9 @@ elif [ "$distro" = debian ]; then
   if [ "$vers" = 12 ]; then
     url_prefix="https://cloud.debian.org/images/cloud/bookworm/latest/"
     url_file="debian-12-generic-amd64.qcow2"
+  elif [ "$vers" = 13 ]; then
+    url_prefix="https://cloud.debian.org/images/cloud/trixie/latest/"
+    url_file="debian-13-generic-amd64.qcow2"
   else
     echo "Error - unknown os version" >&2
     exit 112
