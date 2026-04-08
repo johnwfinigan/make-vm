@@ -8,8 +8,9 @@ memory_mb=4096
 vers=9
 distro=el
 disk_gb=50
+virt_sysprep=false
 
-while getopts :g:m:v:d: opt; do
+while getopts :s:g:m:v:d: opt; do
   case "$opt" in
   m)
     re='^[0-9]+$'
@@ -28,6 +29,9 @@ while getopts :g:m:v:d: opt; do
     ;;
   g)
     disk_gb="$OPTARG"
+    ;;
+  s)
+    virt_sysprep=true
     ;;
   \?)
     echo "invalid option, exiting" >&2
@@ -98,7 +102,10 @@ fi
 
 sudo cp -a --sparse=always --reflink=auto "$srcdisk" "$destdisk"
 sudo qemu-img resize "$destdisk" "${disk_gb}G"
-sudo virt-sysprep --operations=defaults -a "$destdisk"
+
+if [ "$virt_sysprep" = "true" ] ; then
+  sudo virt-sysprep --operations=defaults -a "$destdisk"
+fi
 
 meta=$(mktemp)
 printf "instance-id: %s\n" "$(uuidgen)" >"$meta"
