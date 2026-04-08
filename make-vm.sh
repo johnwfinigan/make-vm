@@ -57,7 +57,7 @@ destdisk="$loc/$vm_name.qcow2"
 if [ "$distro" = el ]; then
   vers="${version:-9}"
   os_variant="rhel${vers}.0"
-  if [ "$vers" = 8 ] || [ "$vers" = 9 ] ; then
+  if [ "$vers" = 8 ] || [ "$vers" = 9 ]; then
     url_prefix="https://download.rockylinux.org/pub/rocky/${vers}/images/x86_64/"
     url_file="Rocky-${vers}-GenericCloud.latest.x86_64.qcow2"
   elif [ "$vers" = 7 ]; then
@@ -67,7 +67,7 @@ if [ "$distro" = el ]; then
     echo "Error - unknown os version" >&2
     exit 112
   fi
-elif [ "$distro" = debian ] ; then
+elif [ "$distro" = debian ]; then
   vers="${version:-12}"
   os_variant=debian11
   if [ "$vers" = 12 ]; then
@@ -105,7 +105,7 @@ fi
 sudo cp -a --sparse=always --reflink=auto "$srcdisk" "$destdisk"
 sudo qemu-img resize "$destdisk" "${disk_gb}G"
 
-if [ "$virt_sysprep" = "true" ] ; then
+if [ "$virt_sysprep" = "true" ]; then
   sudo virt-sysprep --operations=defaults -a "$destdisk"
 fi
 
@@ -113,7 +113,7 @@ meta=$(mktemp)
 printf "instance-id: %s\n" "$(uuidgen)" >"$meta"
 
 cloudinit=$(mktemp)
-sed -e "s/XXX_HOSTNAME/$vm_name/" < cloud-init-el.yml > "$cloudinit"
+sed -e "s/XXX_HOSTNAME/$vm_name/" <cloud-init-el.yml >"$cloudinit"
 
 sudo virt-install \
   --name "$1" \
