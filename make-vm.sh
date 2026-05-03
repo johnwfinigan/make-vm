@@ -9,7 +9,30 @@ distro=el
 disk_gb=50
 virt_sysprep=false
 
-while getopts :s:g:m:v:d: opt; do
+usage() {
+  cat <<EOF
+Usage: $(basename "$0") [OPTIONS] vm-name
+
+Options:
+  -d  Linux distribution (default: el)
+      el = Rocky or CentOS
+      ol = Oracle Linux
+      debian = Debian
+      fedora = Fedora
+      ubuntu = Ubuntu
+  -g  Disk size in GB (default: 50)
+  -h  Help
+  -m  Memory in MB (default: 4096)
+  -s  Enable virt-sysprep (disabled by default)
+  -v  Distribution version 
+
+Example:
+  $(basename "$0") -m 4096 -g 40 -d debian -v 12 debian-12-test
+EOF
+  exit 0
+}
+
+while getopts :s:g:m:v:d:h opt; do
   case "$opt" in
   m)
     re='^[0-9]+$'
@@ -28,6 +51,9 @@ while getopts :s:g:m:v:d: opt; do
     ;;
   g)
     disk_gb="$OPTARG"
+    ;;
+  h)
+    usage
     ;;
   s)
     virt_sysprep=true
