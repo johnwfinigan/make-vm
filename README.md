@@ -7,6 +7,27 @@ You need a working libvirtd with a network called "default" for this to work.
 Before running, update ```cloud-init-el.yml``` to add your ssh key, so that you can ssh to the
 VM as the user it creates, named (by default) ```sysadm```
 
+# Usage
+
+```
+Usage: make-vm.sh [OPTIONS] vm-name
+
+Options:
+  -d  Linux distribution (default: el)
+      el = Rocky or CentOS
+      ol = Oracle Linux
+      debian = Debian
+      fedora = Fedora
+      ubuntu = Ubuntu
+  -g  Disk size in GB (default: 50)
+  -h  Help
+  -m  Memory in MB (default: 4096)
+  -s  Enable virt-sysprep (disabled by default)
+  -v  Distribution version 
+
+Example:
+  make-vm.sh -m 4096 -g 40 -d debian -v 12 debian-12-test
+```
 
 # Examples
 
