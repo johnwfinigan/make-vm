@@ -67,6 +67,32 @@ if [ "$distro" = el ]; then
     echo "Error - unknown os version" >&2
     exit 112
   fi
+elif [ "$distro" = ol ]; then
+  vers="${version:-10}"
+  os_variant="rhel${vers}.0"
+  url_prefix="https://yum.oracle.com/templates/OracleLinux/"
+  case "$vers" in
+  7)
+    url_prefix+="OL7/u9/x86_64/"
+    url_file="OL7U9_x86_64-kvm-b257.qcow2"
+    ;;
+  8)
+    url_prefix+="OL8/u10/x86_64/"
+    url_file="OL8U10_x86_64-kvm-b271.qcow2"
+    ;;
+  9)
+    url_prefix+="OL9/u7/x86_64/"
+    url_file="OL9U7_x86_64-kvm-b269.qcow2"
+    ;;
+  10)
+    url_prefix+="OL10/u1/x86_64/"
+    url_file="OL10U1_x86_64-kvm-b270.qcow2"
+    ;;
+  *)
+    echo "Error - unknown os version" >&2
+    exit 112
+    ;;
+  esac
 elif [ "$distro" = debian ]; then
   vers="${version:-12}"
   os_variant=debian11
