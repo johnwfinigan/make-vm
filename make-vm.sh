@@ -32,7 +32,7 @@ EOF
   exit 0
 }
 
-while getopts :s:g:m:v:d:h opt; do
+while getopts :i:s:g:m:v:d:h opt; do
   case "$opt" in
   m)
     re='^[0-9]+$'
@@ -54,6 +54,9 @@ while getopts :s:g:m:v:d:h opt; do
     ;;
   h)
     usage
+    ;;
+  i)
+    custom_image="$OPTARG"
     ;;
   s)
     virt_sysprep=true
@@ -141,6 +144,9 @@ elif [ "$distro" = ubuntu ]; then
   os_variant=debian11
   url_prefix="https://cloud-images.ubuntu.com/${vers}/current/"
   url_file="${vers}-server-cloudimg-amd64.img"
+elif [ "$distro" = custom ] ; then
+  os_variant="rhel8.0"
+  url_file="$custom_image" 
 fi
 
 srcdisk="$loc/$url_file"
