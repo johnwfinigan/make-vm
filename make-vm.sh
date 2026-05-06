@@ -8,6 +8,7 @@ memory_mb=4096
 distro=el
 disk_gb=50
 virt_sysprep=false
+network=default
 
 usage() {
   cat <<EOF
@@ -57,6 +58,9 @@ while getopts :i:s:g:m:v:d:h opt; do
     ;;
   i)
     custom_image="$OPTARG"
+    ;;
+  n)
+    network="$OPTARG"
     ;;
   s)
     virt_sysprep=true
@@ -181,7 +185,7 @@ sudo virt-install \
   --os-variant "$os_variant" \
   --memory "$memory_mb" \
   --vcpus 2 \
-  --network default \
+  --network "$network" \
   --import \
   --disk "$destdisk" \
   --noautoconsole \
