@@ -87,7 +87,8 @@ vm_name="$1"
 loc=/var/lib/libvirt/images
 destdisk="$loc/$vm_name.qcow2"
 
-if [ "$distro" = el ]; then
+case "$distro" in
+el)
   vers="${version:-9}"
   os_variant="rhel${vers}.0"
   if [ "$vers" = 8 ] || [ "$vers" = 9 ] || [ "$vers" = 10 ]; then
@@ -100,7 +101,8 @@ if [ "$distro" = el ]; then
     echo "Error - unknown os version" >&2
     exit 112
   fi
-elif [ "$distro" = ol ]; then
+  ;;
+ol)
   vers="${version:-10}"
   os_variant="rhel${vers}.0"
   url_prefix="https://yum.oracle.com/templates/OracleLinux/"
@@ -126,7 +128,8 @@ elif [ "$distro" = ol ]; then
     exit 112
     ;;
   esac
-elif [ "$distro" = debian ]; then
+  ;;
+debian)
   vers="${version:-12}"
   os_variant=debian11
   if [ "$vers" = 12 ]; then
@@ -139,19 +142,27 @@ elif [ "$distro" = debian ]; then
     echo "Error - unknown os version" >&2
     exit 112
   fi
-elif [ "$distro" = fedora ]; then
+  ;;
+fedora)
   os_variant="rhel9.0"
   url_prefix="https://download.fedoraproject.org/pub/fedora/linux/releases/43/Cloud/x86_64/images/"
   url_file="Fedora-Cloud-Base-Generic-43-1.6.x86_64.qcow2"
-elif [ "$distro" = ubuntu ]; then
+  ;;
+ubuntu)
   vers="${version:-noble}"
   os_variant=debian11
   url_prefix="https://cloud-images.ubuntu.com/${vers}/current/"
   url_file="${vers}-server-cloudimg-amd64.img"
-elif [ "$distro" = custom ] ; then
+  ;;
+custom)
   os_variant="rhel8.0"
-  url_file="$custom_image" 
-fi
+  url_file="$custom_image"
+  ;;
+*)
+  echo "Error - unknown os version" >&2
+  exit 112
+  ;;
+esac
 
 srcdisk="$loc/$url_file"
 
