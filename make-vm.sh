@@ -33,7 +33,7 @@ EOF
   exit 0
 }
 
-while getopts :i:s:g:m:v:d:h opt; do
+while getopts :n:i:s:g:m:v:d:h opt; do
   case "$opt" in
   m)
     re='^[0-9]+$'
