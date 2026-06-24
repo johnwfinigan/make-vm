@@ -33,20 +33,8 @@ EOF
   exit 0
 }
 
-while getopts :n:i:s:g:m:v:d:h opt; do
+while getopts :hsd:g:i:m:n:v: opt; do
   case "$opt" in
-  m)
-    re='^[0-9]+$'
-    if [[ $OPTARG =~ $re ]]; then
-      memory_mb="$OPTARG"
-    else
-      echo "Error - memory must be specified as a number" >&2
-      exit 112
-    fi
-    ;;
-  v)
-    version="$OPTARG"
-    ;;
   d)
     distro="$OPTARG"
     ;;
@@ -60,11 +48,23 @@ while getopts :n:i:s:g:m:v:d:h opt; do
     custom_image="$OPTARG"
     distro=custom
     ;;
+  m)
+    re='^[0-9]+$'
+    if [[ $OPTARG =~ $re ]]; then
+      memory_mb="$OPTARG"
+    else
+      echo "Error - memory must be specified as a number" >&2
+      exit 112
+    fi
+    ;;
   n)
     network="$OPTARG"
     ;;
   s)
     virt_sysprep=true
+    ;;
+  v)
+    version="$OPTARG"
     ;;
   \?)
     echo "invalid option, exiting" >&2
