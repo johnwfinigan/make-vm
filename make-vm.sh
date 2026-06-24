@@ -192,15 +192,19 @@ printf "instance-id: %s\n" "$(uuidgen)" >"$meta"
 cloudinit=$(mktemp)
 sed -e "s/XXX_HOSTNAME/$vm_name/" <cloud-init-el.yml >"$cloudinit"
 
-sudo virt-install \
-  --name "$1" \
-  --os-variant "$os_variant" \
-  --memory "$memory_mb" \
-  --vcpus 2 \
-  --network "$network" \
-  --import \
-  --disk "$destdisk" \
-  --noautoconsole \
+virt_install_cmd=(
+  virt-install
+  --name "$1"
+  --os-variant "$os_variant"
+  --memory "$memory_mb"
+  --vcpus 2
+  --network "$network"
+  --import
+  --disk "$destdisk"
+  --noautoconsole
   --cloud-init disable=on,user-data="$cloudinit",meta-data="$meta"
+)
+
+sudo "${virt_install_cmd[@]}"
 
 rm "$meta" "$cloudinit"
