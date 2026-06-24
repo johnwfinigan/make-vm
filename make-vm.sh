@@ -71,7 +71,7 @@ while getopts :hsd:g:i:m:n:v: opt; do
     exit 113
     ;;
   :)
-    printf "\55%s needs an argument, exiting\n" "$OPTARG" >&2
+    printf -- "%s needs an argument, exiting\n" "$OPTARG" >&2
     exit 114
     ;;
   esac
