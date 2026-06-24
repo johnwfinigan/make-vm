@@ -58,6 +58,7 @@ while getopts :n:i:s:g:m:v:d:h opt; do
     ;;
   i)
     custom_image="$OPTARG"
+    distro=custom
     ;;
   n)
     network="$OPTARG"
