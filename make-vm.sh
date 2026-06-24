@@ -8,6 +8,7 @@ memory_mb=4096
 distro=el
 disk_gb=50
 virt_sysprep=false
+transient=false
 network=default
 
 usage() {
@@ -25,6 +26,7 @@ Options:
   -h  Help
   -m  Memory in MB (default: 4096)
   -s  Enable virt-sysprep (disabled by default)
+  -t  Transient VM, deleted when shut down
   -v  Distribution version 
 
 Example:
@@ -33,7 +35,7 @@ EOF
   exit 0
 }
 
-while getopts :hsd:g:i:m:n:v: opt; do
+while getopts :hstd:g:i:m:n:v: opt; do
   case "$opt" in
   d)
     distro="$OPTARG"
@@ -62,6 +64,9 @@ while getopts :hsd:g:i:m:n:v: opt; do
     ;;
   s)
     virt_sysprep=true
+    ;;
+  t)
+    transient=true
     ;;
   v)
     version="$OPTARG"
@@ -205,6 +210,15 @@ virt_install_cmd=(
   --cloud-init disable=on,user-data="$cloudinit",meta-data="$meta"
 )
 
+if "$transient" ; then
+  virt_install_cmd+=(--transient)
+fi
+
 sudo "${virt_install_cmd[@]}"
+
+# Unlink virtual disk while still running for auto cleanup
+if "$transient" ; then
+  sudo rm -v "$destdisk"
+fi
 
 rm "$meta" "$cloudinit"
