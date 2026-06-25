@@ -208,6 +208,7 @@ virt_install_cmd=(
   --disk "$destdisk"
   --noautoconsole
   --cloud-init disable=on,user-data="$cloudinit",meta-data="$meta"
+  --events on_reboot=restart
 )
 
 if "$transient" ; then
