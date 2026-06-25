@@ -187,7 +187,7 @@ fi
 sudo cp -a --sparse=always --reflink=auto "$srcdisk" "$destdisk"
 sudo qemu-img resize "$destdisk" "${disk_gb}G"
 
-if [ "$virt_sysprep" = "true" ]; then
+if "$virt_sysprep"; then
   sudo virt-sysprep --operations=defaults -a "$destdisk"
 fi
 
@@ -211,14 +211,14 @@ virt_install_cmd=(
   --events on_reboot=restart
 )
 
-if "$transient" ; then
+if "$transient"; then
   virt_install_cmd+=(--transient)
 fi
 
 sudo "${virt_install_cmd[@]}"
 
 # Unlink virtual disk while still running for auto cleanup
-if "$transient" ; then
+if "$transient"; then
   sudo rm -v "$destdisk"
 fi
 
